@@ -37,7 +37,9 @@ public class Transacciones {
     //Constructor
     //////////////////
 
-    public Transacciones() { }
+    public Transacciones() {
+        inicializatedFireBase();
+    }
 
     /////////////////////
     //Metodos
@@ -65,7 +67,7 @@ public class Transacciones {
         });
     }
 
-    public void inicializatedFireBase(Context context){
+    public void inicializatedFireBase(){
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();

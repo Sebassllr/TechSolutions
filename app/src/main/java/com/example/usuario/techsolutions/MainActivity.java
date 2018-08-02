@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.database.DatabaseReference;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializer();
-        tr.inicializatedFireBase(this);
+        tr.inicializatedFireBase();
     }
 
     public void initializer(){

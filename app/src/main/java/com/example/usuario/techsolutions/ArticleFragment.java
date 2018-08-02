@@ -1,5 +1,6 @@
 package com.example.usuario.techsolutions;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,17 +11,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.usuario.techsolutions.MainActivity.calledAlready;
+
 public class ArticleFragment extends Fragment {
 
-    private DatabaseReference databaseReference;
+    public DatabaseReference databaseReference;
+    public FirebaseAuth firebaseAuth;
+    public FirebaseDatabase firebaseDatabase;
+    public ProgressDialog progressDialog;
+    public FirebaseUser firebaseUser;
+    public StorageReference mStorage;
 
     private View view;
     private RecyclerView mRecyclerDates;
@@ -39,6 +52,15 @@ public class ArticleFragment extends Fragment {
     }
 
     private void initializer(){
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        mStorage = FirebaseStorage.getInstance().getReference();
+        if (!calledAlready) {
+            firebaseDatabase.setPersistenceEnabled(true);
+            calledAlready = true;
+        }
+        databaseReference = firebaseDatabase.getReference();
         getRvData();
     }
 
