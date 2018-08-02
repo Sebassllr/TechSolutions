@@ -3,6 +3,9 @@ package com.example.usuario.techsolutions;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 public class MainFragentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -77,13 +81,25 @@ public class MainFragentActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        FrameLayout fl = findViewById(R.id.frFragment);
+        fl.removeAllViews();
+        manager.popBackStack();
+        getFragmentManager().popBackStack();
+        Fragment fragment = null;
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("AddArticle", Boolean.TRUE);   //parameters are (key, value).
+            fragment = new AddArticleFragment();
+            fragment.setArguments(bundle);
         } else if (id == R.id.nav_gallery) {
-
+            fragment = new ArticleFragment();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -92,6 +108,11 @@ public class MainFragentActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
 
+        }
+
+        if(fragment != null) {
+            transaction.replace(R.id.frFragment, fragment);
+            transaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

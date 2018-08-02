@@ -22,11 +22,18 @@ public class AddArticleFragment extends Fragment implements View.OnClickListener
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_add_article, container, false);
+        initializer();
         return view;
     }
 
     private void initializer(){
         view.findViewById(R.id.btnAdd).setOnClickListener(this);
+        Bundle bundle = getArguments();
+        Boolean mDocNum = bundle.getBoolean("AddArticle");
+        if(mDocNum){
+            view.findViewById(R.id.etTitle).setEnabled(Boolean.TRUE);
+            view.findViewById(R.id.etContent).setEnabled(Boolean.TRUE);
+        }
     }
 
     @Override
