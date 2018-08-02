@@ -1,38 +1,34 @@
 package com.example.usuario.techsolutions;
 
-public class Article {
+public class Article{
 
     //////////////////////////////////////
     //Variables///////////////////////////
     //////////////////////////////////////
 
-    private String name;
+    public final static String ARTICLE_NODE_NAME = "Article";
 
     private String autor;
 
     private String title;
 
+    private String idOwner;
+
+    private String content;
     //////////////////////////////////////
     //Contructor//////////////////////////
     //////////////////////////////////////
 
-    public Article(String name, String autor, String title) {
-        this.name = name;
+    public Article(String autor, String title, String idOwner, String content) {
         this.autor = autor;
         this.title = title;
+        this.idOwner = idOwner;
+        this.content = content;
     }
 
     //////////////////////////////////////
     //Getters and setters/////////////////
     //////////////////////////////////////
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getAutor() {
         return autor;
@@ -48,5 +44,13 @@ public class Article {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getIdOwner() {
+        return idOwner;
+    }
+
+    public void setIdOwner(String idOwner) {
+        this.idOwner = idOwner;
     }
 }
