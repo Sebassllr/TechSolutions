@@ -1,6 +1,8 @@
 package com.example.usuario.techsolutions;
 
-public class Article{
+import java.io.Serializable;
+
+public class Article implements Serializable{
 
     //////////////////////////////////////
     //Variables///////////////////////////
@@ -8,19 +10,19 @@ public class Article{
 
     public final static String ARTICLE_NODE_NAME = "Article";
 
-    private String autor;
-
     private String title;
 
     private String idOwner;
 
     private String content;
+
     //////////////////////////////////////
     //Contructor//////////////////////////
     //////////////////////////////////////
 
-    public Article(String autor, String title, String idOwner, String content) {
-        this.autor = autor;
+    public Article() {}
+
+    public Article(String title, String idOwner, String content) {
         this.title = title;
         this.idOwner = idOwner;
         this.content = content;
@@ -29,14 +31,6 @@ public class Article{
     //////////////////////////////////////
     //Getters and setters/////////////////
     //////////////////////////////////////
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
 
     public String getTitle() {
         return title;
@@ -52,5 +46,13 @@ public class Article{
 
     public void setIdOwner(String idOwner) {
         this.idOwner = idOwner;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

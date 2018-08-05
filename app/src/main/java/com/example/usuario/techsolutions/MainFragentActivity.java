@@ -95,7 +95,7 @@ public class MainFragentActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             Bundle bundle = new Bundle();
-            bundle.putBoolean("AddArticle", Boolean.TRUE);   //parameters are (key, value).
+            bundle.putBoolean("AddArticle", Boolean.TRUE);
             fragment = new AddArticleFragment();
             fragment.setArguments(bundle);
         } else if (id == R.id.nav_gallery) {

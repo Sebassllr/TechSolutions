@@ -40,13 +40,14 @@ public class ArticleFragment extends Fragment {
     private RVArticles rvArticles;
     private LinearLayoutManager mLinearLayoutManager;
 
-    public static ArrayList<Article> mDataTest = new ArrayList();
+    public static ArrayList<Article> mDataTest;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_article, container, Boolean.FALSE);
+        mDataTest = new ArrayList();
         initializer();
         return view;
     }
@@ -67,8 +68,7 @@ public class ArticleFragment extends Fragment {
     private void setRvArticles(){
         mRecyclerDates = view.findViewById(R.id.rv_articles) ;
         mRecyclerDates.setHasFixedSize(true);
-
-        mLinearLayoutManager =  new GridLayoutManager(view.getContext(), 2);
+        mLinearLayoutManager =  new GridLayoutManager(view.getContext(), 1);
         mRecyclerDates.setLayoutManager(mLinearLayoutManager);
         mRecyclerDates.setItemAnimator(new DefaultItemAnimator());
         rvArticles = new RVArticles(mDataTest, view.getContext());
