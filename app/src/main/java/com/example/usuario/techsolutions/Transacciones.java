@@ -56,9 +56,8 @@ public class Transacciones {
         return databaseReference.child(childDatabaseR).child(key).setValue(object);
     }
 
-    public void registrarArtículo(String title, String autor, String content, String idOwner, final String key){
-        Article article = new Article(autor, title, idOwner, content);
-
+    public void registrarArtículo(String title, String content, String idOwner, final String key){
+        Article article = new Article(title, idOwner, content);
         insertar(Article.ARTICLE_NODE_NAME, key, article).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
