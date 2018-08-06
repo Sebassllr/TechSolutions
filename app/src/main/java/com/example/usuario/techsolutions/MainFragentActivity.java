@@ -1,5 +1,6 @@
 package com.example.usuario.techsolutions;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,13 +21,15 @@ import android.widget.FrameLayout;
 public class MainFragentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Transacciones tr = new Transacciones();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fragent);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        tr.inicializatedFireBase();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +92,7 @@ public class MainFragentActivity extends AppCompatActivity
         manager.popBackStack();
         getFragmentManager().popBackStack();
         Fragment fragment = null;
-
+        RVArticles.isEditing = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -101,13 +104,9 @@ public class MainFragentActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             fragment = new ArticleFragment();
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            fragment = new MyArticlesFragment();
+        }else if(id == R.id.nav_send){
+            signout();
         }
 
         if(fragment != null) {
@@ -119,4 +118,11 @@ public class MainFragentActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void signout(){
+        tr.firebaseAuth.signOut();
+        finish();
+        startActivity(new Intent(MainFragentActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+    }
+
 }
