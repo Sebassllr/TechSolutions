@@ -23,11 +23,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.usuario.techsolutions.MainActivity.calledAlready;
 
-public class ArticleFragment extends Fragment {
+public class MyArticlesFragment extends Fragment {
 
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
@@ -37,18 +36,17 @@ public class ArticleFragment extends Fragment {
     public StorageReference mStorage;
 
     private View view;
-    private RecyclerView mRecyclerDates;
-    private RVArticles rvArticles;
-    private LinearLayoutManager mLinearLayoutManager;
+
+    private FirebaseDAO firebaseDAO = new FirebaseDAO();
 
     public static ArrayList<Article> mDataTest;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_article, container, Boolean.FALSE);
-        mDataTest = new ArrayList();
+        view = inflater.inflate(R.layout.fragment_my_articles, container, false);
+        mDataTest = new ArrayList<>();
         initializer();
         return view;
     }
@@ -67,12 +65,15 @@ public class ArticleFragment extends Fragment {
     }
 
     private void setRvArticles(){
-        RVArticles.isEditing = null;
+        RecyclerView mRecyclerDates;
+        RVArticles rvArticles;
+        LinearLayoutManager mLinearLayoutManager;
         mRecyclerDates = view.findViewById(R.id.rv_articles) ;
         mRecyclerDates.setHasFixedSize(true);
         mLinearLayoutManager =  new GridLayoutManager(view.getContext(), 1);
         mRecyclerDates.setLayoutManager(mLinearLayoutManager);
         mRecyclerDates.setItemAnimator(new DefaultItemAnimator());
+        RVArticles.isEditing = Boolean.TRUE;
         rvArticles = new RVArticles(mDataTest, view.getContext());
         mRecyclerDates.setAdapter(rvArticles);
     }
@@ -81,11 +82,12 @@ public class ArticleFragment extends Fragment {
         databaseReference.child(Article.ARTICLE_NODE_NAME)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull  DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             if(snapshot != null){
+                                FirebaseUser user = firebaseDAO.getFirebaseUser();
                                 Article object = snapshot.getValue(Article.class);
-                                if(object != null && !object.getDeleted()){
+                                if(object != null && !object.getDeleted() && object.getIdOwner().equals(user.getUid())){
                                     mDataTest.add(object);
                                 }
                             }
@@ -97,6 +99,5 @@ public class ArticleFragment extends Fragment {
                     }
                 });
     }
-
 
 }

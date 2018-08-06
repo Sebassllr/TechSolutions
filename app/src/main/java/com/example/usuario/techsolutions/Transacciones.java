@@ -28,11 +28,11 @@ public class Transacciones {
 
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
-    public FirebaseDatabase firebaseDatabase;
-    public ProgressDialog progressDialog;
-    public FirebaseUser firebaseUser;
-    public StorageReference mStorage;
-    public FirebaseUser user ;
+    private FirebaseDatabase firebaseDatabase;
+    private ProgressDialog progressDialog;
+    private FirebaseUser firebaseUser;
+    private StorageReference mStorage;
+    private FirebaseUser user ;
     ///////////////////
     //Constructor
     //////////////////
@@ -52,12 +52,17 @@ public class Transacciones {
      * @param key            llave primaria del objeto
      * @param object         objeto a guardar
      */
-    private Task<Void> insertar(String childDatabaseR, String key, Object object) {
+    public Task<Void> insertar(String childDatabaseR, String key, Object object) {
         return databaseReference.child(childDatabaseR).child(key).setValue(object);
     }
 
+    public void delete(String idFav){
+        databaseReference.child(Article.ARTICLE_NODE_NAME).child(idFav).child("deleted").setValue(Boolean.TRUE);
+        databaseReference.child(Article.ARTICLE_NODE_NAME).child(idFav).child("isDeleted").setValue(Boolean.TRUE);
+    }
+
     public void registrarArtículo(String title, String content, String idOwner, final String key){
-        Article article = new Article(title, idOwner, content);
+        Article article = new Article(title, idOwner, content, Boolean.FALSE, key);
         insertar(Article.ARTICLE_NODE_NAME, key, article).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

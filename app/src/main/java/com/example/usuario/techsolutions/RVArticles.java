@@ -19,7 +19,11 @@ public class RVArticles extends RecyclerView.Adapter<RVArticles.ViewHolder>{
 
     private Context mContext;
 
+    public static Boolean isEditing;
+
     public static Article clickedArticle;
+
+    private Transacciones transacciones = new Transacciones();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -60,10 +64,27 @@ public class RVArticles extends RecyclerView.Adapter<RVArticles.ViewHolder>{
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.frFragment, articleFragment).addToBackStack(null).commit();
             }
         });
+        if(isEditing != null && isEditing){
+            holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    transacciones.delete(mDataset.get(position).getId());
+                    removeAt(position);
+                    return false;
+                }
+            });
+        }
+
     }
 
     @Override
     public int getItemCount() {
         return mDataset.size();
+    }
+
+    public void removeAt(int position) {
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mDataset.size());
     }
 }

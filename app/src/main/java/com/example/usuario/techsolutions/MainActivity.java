@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         progressDialog.dismiss();
                         if(task.isSuccessful()){
                             tr.account(getApplicationContext());
-
                         }else{
                             Toast.makeText(getApplicationContext(),"Datos errados",Toast.LENGTH_LONG).show();
                         }
