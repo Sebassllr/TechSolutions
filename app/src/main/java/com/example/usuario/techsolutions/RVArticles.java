@@ -74,7 +74,6 @@ public class RVArticles extends RecyclerView.Adapter<RVArticles.ViewHolder>{
                 }
             });
         }
-
     }
 
     @Override

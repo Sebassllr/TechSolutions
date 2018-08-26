@@ -8,6 +8,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:layout_marginTop="75dp"
         android:textColor="@color/black"
         android:text="@string/email"
         android:labelFor="@+id/tvName"

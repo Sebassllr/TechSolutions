@@ -7,24 +7,27 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@mipmap/ic_write"
-            android:title="Import" />
+            android:title="Agregar" />
         <item
             android:id="@+id/nav_gallery"
             android:icon="@mipmap/ic_planning_paper"
-            android:title="Gallery" />
+            android:title="Ver artículos" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@mipmap/ic_write"
-            android:title="Slideshow" />
-
+            android:title="Ver mis artículos" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@mipmap/ic_search"
+            android:title="Buscar" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Salir">
         <menu>
             <item
                 android:id="@+id/nav_send"
                 android:icon="@mipmap/ic_log_out"
-                android:title="Send" />
+                android:title="Salir" />
         </menu>
     </item>
 
