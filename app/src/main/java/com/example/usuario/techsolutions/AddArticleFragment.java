@@ -38,13 +38,17 @@ public class AddArticleFragment extends Fragment implements View.OnClickListener
         view.findViewById(R.id.btnAdd).setOnClickListener(this);
         view.findViewById(R.id.etTitle).setEnabled(Boolean.FALSE);
         view.findViewById(R.id.etContent).setEnabled(Boolean.FALSE);
+        view.findViewById(R.id.etTag).setEnabled(Boolean.FALSE);
         (view.findViewById(R.id.btnAdd)).setVisibility(View.GONE);
         Bundle bundle = getArguments();
         if(RVArticles.isEditing != null){
             view.findViewById(R.id.etTitle).setEnabled(Boolean.TRUE);
             view.findViewById(R.id.etContent).setEnabled(Boolean.TRUE);
+            view.findViewById(R.id.etTag).setEnabled(Boolean.TRUE);
             RVArticles.isEditing = null;
             (view.findViewById(R.id.btnAdd)).setVisibility(View.VISIBLE);
+            Button button = view.findViewById(R.id.btnAdd);
+            button.setText("Editar artículo");
             isEdit = Boolean.TRUE;
         }
         if(bundle != null){
@@ -58,7 +62,7 @@ public class AddArticleFragment extends Fragment implements View.OnClickListener
         if(RVArticles.clickedArticle != null){
             ((TextView) view.findViewById(R.id.etTitle)).setText(RVArticles.clickedArticle.getTitle());
             ((TextView) view.findViewById(R.id.etContent)).setText(RVArticles.clickedArticle.getContent());
-
+            ((TextView) view.findViewById(R.id.etTag)).setText(RVArticles.clickedArticle.getTag());
             article = RVArticles.clickedArticle;
             RVArticles.clickedArticle = null;
         }
@@ -68,17 +72,19 @@ public class AddArticleFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         EditText editTextTitle = view.findViewById(R.id.etTitle);
         EditText editTextContent = view.findViewById(R.id.etContent);
+        EditText editTextTag = view.findViewById(R.id.etTag);
         String title = editTextTitle.getText().toString();
         String content = editTextContent.getText().toString();
-
+        String tag = editTextTag.getText().toString();
         if(!isEdit){
             String idEntregable = transacciones.databaseReference.push().getKey();
-            transacciones.registrarArtículo(title,  content, transacciones.firebaseAuth.getCurrentUser().getUid(), idEntregable);
+            transacciones.registrarArtículo(title,  content, tag, transacciones.firebaseAuth.getCurrentUser().getUid(), idEntregable);
         }else{
             article.setContent(content);
             article.setTitle(title);
+            article.setTag(tag);
             transacciones.insertar(Article.ARTICLE_NODE_NAME, article.getId(), article);
         }
-
+        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 }

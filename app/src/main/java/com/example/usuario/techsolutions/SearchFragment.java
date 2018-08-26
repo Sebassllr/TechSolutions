@@ -1,8 +1,11 @@
 package com.example.usuario.techsolutions;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +14,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,35 +29,43 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.usuario.techsolutions.MainActivity.calledAlready;
 
-public class ArticleFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener{
+
+    private View view;
+
+    private EditText etToSearch;
+
+    private Button toSearch;
 
     public DatabaseReference databaseReference;
     public FirebaseAuth firebaseAuth;
     public FirebaseDatabase firebaseDatabase;
+    public ProgressDialog progressDialog;
     public FirebaseUser firebaseUser;
     public StorageReference mStorage;
 
-    private View view;
     private RecyclerView mRecyclerDates;
     private RVArticles rvArticles;
     private LinearLayoutManager mLinearLayoutManager;
 
-    public static ArrayList<Article> mDataTest;
+    public ArrayList<Article> mDataTest = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_article, container, Boolean.FALSE);
-        initializer();
+        view = inflater.inflate(R.layout.fragment_search, container, false);
+        initComponents();
         return view;
     }
 
-    private void initializer(){
+    private void initComponents(){
+        etToSearch = view.findViewById(R.id.etToSearch);
+        toSearch = view.findViewById(R.id.btnToSearch);
+        toSearch.setOnClickListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -61,7 +75,51 @@ public class ArticleFragment extends Fragment {
             calledAlready = true;
         }
         databaseReference = firebaseDatabase.getReference();
-        getRvData();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Integer id = v.getId();
+        switch (id){
+            case R.id.btnToSearch:{
+                searchArticle(etToSearch.getText().toString().toLowerCase());
+                break;
+            }
+        }
+    }
+
+
+    private void searchArticle(final String toSearch){
+
+        databaseReference.child(Article.ARTICLE_NODE_NAME)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        mDataTest = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            if(snapshot != null){
+                                Article object = snapshot.getValue(Article.class);
+
+                                if(object != null && !object.getDeleted()){
+                                    if(object.getTag() != null && object.getTag().toLowerCase().contains(toSearch) ||
+                                            object.getTitle().toLowerCase().contains(toSearch)){
+                                        mDataTest.add(object);
+                                    }
+                                }
+                            }
+                        }
+                        if(mDataTest.size() > 0){
+                            setRvArticles();
+                        }else{
+                            Toast.makeText(getContext(), "No hay resultados disponibles", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
     }
 
     private void setRvArticles(){
@@ -74,28 +132,4 @@ public class ArticleFragment extends Fragment {
         rvArticles = new RVArticles(mDataTest, view.getContext());
         mRecyclerDates.setAdapter(rvArticles);
     }
-
-    private void getRvData(){
-        mDataTest = new ArrayList<>();
-        databaseReference.child(Article.ARTICLE_NODE_NAME)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull  DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            if(snapshot != null){
-                                Article object = snapshot.getValue(Article.class);
-                                if(object != null && !object.getDeleted()){
-                                    mDataTest.add(object);
-                                }
-                            }
-                        }
-                        setRvArticles();
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-    }
-
-
 }

@@ -16,7 +16,10 @@
             android:id="@+id/nav_slideshow"
             android:icon="@mipmap/ic_write"
             android:title="Ver mis artículos" />
-
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@mipmap/ic_search"
+            android:title="Buscar" />
     </group>
 
     <item android:title="Salir">

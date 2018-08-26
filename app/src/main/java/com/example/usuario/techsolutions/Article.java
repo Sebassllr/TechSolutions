@@ -19,18 +19,21 @@ public class Article implements Serializable{
     private Boolean deleted;
 
     private String id;
+
+    private String tag;
     //////////////////////////////////////
     //Contructor//////////////////////////
     //////////////////////////////////////
 
     public Article() {}
 
-    public Article(String title, String idOwner, String content, Boolean deleted, String id) {
+    public Article(String title, String idOwner, String content, String tag, Boolean deleted, String id) {
         this.title = title;
         this.idOwner = idOwner;
         this.content = content;
         this.deleted = deleted;
         this.id = id;
+        this.tag = tag;
     }
 
     //////////////////////////////////////
@@ -75,5 +78,13 @@ public class Article implements Serializable{
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

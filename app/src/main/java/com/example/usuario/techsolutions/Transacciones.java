@@ -61,8 +61,8 @@ public class Transacciones {
         databaseReference.child(Article.ARTICLE_NODE_NAME).child(idFav).child("isDeleted").setValue(Boolean.TRUE);
     }
 
-    public void registrarArtículo(String title, String content, String idOwner, final String key){
-        Article article = new Article(title, idOwner, content, Boolean.FALSE, key);
+    public void registrarArtículo(String title, String content, String tag, String idOwner, final String key){
+        Article article = new Article(title, idOwner, content, tag, Boolean.FALSE, key);
         insertar(Article.ARTICLE_NODE_NAME, key, article).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
